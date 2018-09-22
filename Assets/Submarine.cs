@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Submarine : MonoBehaviour {
@@ -49,12 +50,21 @@ public class Submarine : MonoBehaviour {
 		switch (collision.gameObject.tag)
 		{
 			case "Friendly":
-				//do nothing
+				break;
+			case "Finish":
+				print("You won.");
+				SceneManager.LoadScene(1);
 				break;
 			default:
 				print("You were swallowed by the depths.");
+				SceneManager.LoadScene(0);
 				break;
 		}		
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		print("Trigger entered.");
 	}
 
 	private void PropellerSound()
