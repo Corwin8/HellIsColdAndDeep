@@ -16,24 +16,16 @@ public class Submarine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		ProcessInput();
-		
+		Maneuvering();
+		PropellerSound();
+
 	}
 
-	private void ProcessInput()
+	private void Maneuvering()
 	{
 		if (Input.GetKey(KeyCode.Space))
 		{
 			rigidBody.AddRelativeForce(Vector3.up);
-		}
-
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			propellerAudioSource.Play();
-		}
-		else if (Input.GetKeyUp(KeyCode.Space))
-		{
-			propellerAudioSource.Stop();
 		}
 
 		if (Input.GetKey(KeyCode.A))
@@ -44,6 +36,18 @@ public class Submarine : MonoBehaviour {
 		else if (Input.GetKey(KeyCode.D))
 		{
 			transform.Rotate(-Vector3.forward);
+		}
+	}
+
+	private void PropellerSound()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			propellerAudioSource.Play();
+		}
+		else if (Input.GetKeyUp(KeyCode.Space))
+		{
+			propellerAudioSource.Stop();
 		}
 	}
 }
