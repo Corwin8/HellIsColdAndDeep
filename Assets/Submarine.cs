@@ -10,17 +10,26 @@ public class Submarine : MonoBehaviour {
 	AudioSource propellerAudioSource;
 	[SerializeField] float nozzleRotation = 75f;
 	[SerializeField] float propellerStrenght = 1000f;
+	enum State { Alive, Dying, Transcending};
+	State state = State.Alive;
 
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody>();
 		propellerAudioSource = GetComponent<AudioSource>(); 
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		Maneuvering();
-		PropellerSound();
+	void Update() {
+		if (state == State.Alive)
+		{
+			Maneuvering();
+			PropellerSound();
+		}
+		else
+		{
+			propellerAudioSource.Stop();
+		}
 
 	}
 
@@ -38,7 +47,6 @@ public class Submarine : MonoBehaviour {
 		{
 			transform.Rotate(Vector3.forward*rotationThisFrame);
 		}
-
 		else if (Input.GetKey(KeyCode.D))
 		{
 			transform.Rotate(-Vector3.forward*rotationThisFrame);
@@ -47,19 +55,34 @@ public class Submarine : MonoBehaviour {
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		if (state != State.Alive)
+		{
+			return;
+		}
+
 		switch (collision.gameObject.tag)
 		{
 			case "Friendly":
 				break;
 			case "Finish":
-				print("You won.");
-				SceneManager.LoadScene(1);
+				state = State.Transcending;
+				Invoke("LoadNextLevel", 2f);
 				break;
 			default:
-				print("You were swallowed by the depths.");
-				SceneManager.LoadScene(0);
+				state = State.Dying;
+				Invoke("DeathRestart", 2f);
 				break;
 		}		
+	}
+
+	private void DeathRestart()
+	{
+		SceneManager.LoadScene(0);
+	}
+
+	private void LoadNextLevel()
+	{
+		SceneManager.LoadScene(1);
 	}
 
 	private void OnTriggerEnter(Collider other)
