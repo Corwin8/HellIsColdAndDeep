@@ -7,6 +7,8 @@ public class Submarine : MonoBehaviour {
 
 	Rigidbody rigidBody;
 	AudioSource propellerAudioSource;
+	[SerializeField] float nozzleRotation = 75f;
+	[SerializeField] float propellerStrenght = 1000f;
 
 	// Use this for initialization
 	void Start () {
@@ -23,19 +25,22 @@ public class Submarine : MonoBehaviour {
 
 	private void Maneuvering()
 	{
+		float strenghtThisFrame = propellerStrenght*Time.deltaTime;
+		float rotationThisFrame = nozzleRotation * Time.deltaTime;
+
 		if (Input.GetKey(KeyCode.Space))
 		{
-			rigidBody.AddRelativeForce(Vector3.up);
+			rigidBody.AddRelativeForce(Vector3.up*strenghtThisFrame);
 		}
 
 		if (Input.GetKey(KeyCode.A))
 		{
-			transform.Rotate(Vector3.forward);
+			transform.Rotate(Vector3.forward*rotationThisFrame);
 		}
 
 		else if (Input.GetKey(KeyCode.D))
 		{
-			transform.Rotate(-Vector3.forward);
+			transform.Rotate(-Vector3.forward*rotationThisFrame);
 		}
 	}
 

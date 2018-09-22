@@ -345,7 +345,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1341279906347834}
   serializedVersion: 2
-  m_Mass: 0.05
+  m_Mass: 1
   m_Drag: 2
   m_AngularDrag: 5
   m_UseGravity: 1
@@ -473,6 +473,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68bd526109c0ff479f859fee4fa9cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nozzleRotation: 75
+  propellerStrenght: 1000
 --- !u!136 &136023341667459432
 CapsuleCollider:
   m_ObjectHideFlags: 1
