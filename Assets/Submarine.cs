@@ -44,6 +44,19 @@ public class Submarine : MonoBehaviour {
 		}
 	}
 
+	private void OnCollisionEnter(Collision collision)
+	{
+		switch (collision.gameObject.tag)
+		{
+			case "Friendly":
+				//do nothing
+				break;
+			default:
+				print("You were swallowed by the depths.");
+				break;
+		}		
+	}
+
 	private void PropellerSound()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
