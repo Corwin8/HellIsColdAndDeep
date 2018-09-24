@@ -7,16 +7,19 @@ using UnityEngine;
 public class Submarine : MonoBehaviour {
 
 	Rigidbody rigidBody;
-	AudioSource propellerAudioSource;
+	AudioSource audioSource;
 	[SerializeField] float nozzleRotation = 75f;
 	[SerializeField] float propellerStrenght = 1000f;
+	[SerializeField] AudioClip mainPropeller;
+	[SerializeField] AudioClip explosion;
+	[SerializeField] AudioClip success;
 	enum State { Alive, Dying, Transcending};
 	State state = State.Alive;
 
 	// Use this for initialization
 	void Start () {
 		rigidBody = GetComponent<Rigidbody>();
-		propellerAudioSource = GetComponent<AudioSource>(); 
+		audioSource = GetComponent<AudioSource>(); 
 	}
 
 	// Update is called once per frame
@@ -25,10 +28,6 @@ public class Submarine : MonoBehaviour {
 		{
 			Maneuvering();
 			PropellerSound();
-		}
-		else
-		{
-			propellerAudioSource.Stop();
 		}
 
 	}
@@ -66,10 +65,14 @@ public class Submarine : MonoBehaviour {
 				break;
 			case "Finish":
 				state = State.Transcending;
+				audioSource.Stop();
+				audioSource.PlayOneShot(success, 1);
 				Invoke("LoadNextLevel", 2f);
 				break;
 			default:
 				state = State.Dying;
+				audioSource.Stop();
+				audioSource.PlayOneShot(explosion, 1);
 				Invoke("DeathRestart", 2f);
 				break;
 		}		
@@ -94,11 +97,11 @@ public class Submarine : MonoBehaviour {
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			propellerAudioSource.Play();
+			audioSource.PlayOneShot(mainPropeller);
 		}
 		else if (Input.GetKeyUp(KeyCode.Space))
 		{
-			propellerAudioSource.Stop();
+			audioSource.Stop();
 		}
 	}
 }
