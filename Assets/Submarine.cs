@@ -4,15 +4,23 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class Submarine : MonoBehaviour {
+public class Submarine : MonoBehaviour
+{
 
 	Rigidbody rigidBody;
 	AudioSource audioSource;
+
 	[SerializeField] float nozzleRotation = 75f;
 	[SerializeField] float propellerStrenght = 1000f;
-	[SerializeField] AudioClip mainPropeller;
-	[SerializeField] AudioClip explosion;
-	[SerializeField] AudioClip success;
+
+	[SerializeField] AudioClip mainPropellerSFX;
+	[SerializeField] AudioClip explosionSFX;
+	[SerializeField] AudioClip successSFX;
+
+	[SerializeField] ParticleSystem mainPropellerVFX;
+	[SerializeField] ParticleSystem explosionVFX;
+	[SerializeField] ParticleSystem successVFX;
+
 	enum State { Alive, Dying, Transcending};
 	State state = State.Alive;
 
@@ -76,7 +84,9 @@ public class Submarine : MonoBehaviour {
 	{
 		state = State.Dying;
 		audioSource.Stop();
-		audioSource.PlayOneShot(explosion, 1);
+		mainPropellerVFX.Stop();
+		audioSource.PlayOneShot(explosionSFX, 1);
+		explosionVFX.Play();
 		Invoke("DeathRestart", 2f);
 	}
 
@@ -84,7 +94,8 @@ public class Submarine : MonoBehaviour {
 	{
 		state = State.Transcending;
 		audioSource.Stop();
-		audioSource.PlayOneShot(success, 1);
+		audioSource.PlayOneShot(successSFX, 1);
+		successVFX.Play();
 		Invoke("LoadNextLevel", 2f);
 	}
 
@@ -107,11 +118,13 @@ public class Submarine : MonoBehaviour {
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			audioSource.PlayOneShot(mainPropeller);
+			audioSource.PlayOneShot(mainPropellerSFX);
+			mainPropellerVFX.Play();
 		}
 		else if (Input.GetKeyUp(KeyCode.Space))
 		{
 			audioSource.Stop();
+			mainPropellerVFX.Stop();
 		}
 	}
 }
