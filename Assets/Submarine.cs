@@ -64,18 +64,28 @@ public class Submarine : MonoBehaviour {
 			case "Friendly":
 				break;
 			case "Finish":
-				state = State.Transcending;
-				audioSource.Stop();
-				audioSource.PlayOneShot(success, 1);
-				Invoke("LoadNextLevel", 2f);
+				StartSuccessSequence();
 				break;
 			default:
-				state = State.Dying;
-				audioSource.Stop();
-				audioSource.PlayOneShot(explosion, 1);
-				Invoke("DeathRestart", 2f);
+				StartDeathSequence();
 				break;
 		}		
+	}
+
+	private void StartDeathSequence()
+	{
+		state = State.Dying;
+		audioSource.Stop();
+		audioSource.PlayOneShot(explosion, 1);
+		Invoke("DeathRestart", 2f);
+	}
+
+	private void StartSuccessSequence()
+	{
+		state = State.Transcending;
+		audioSource.Stop();
+		audioSource.PlayOneShot(success, 1);
+		Invoke("LoadNextLevel", 2f);
 	}
 
 	private void DeathRestart()
