@@ -754,7 +754,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4026462644537342, guid: 2b2f0549cb2af334790301d5f7495768, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.5
+      value: 13.5
       objectReference: {fileID: 0}
     - target: {fileID: 4026462644537342, guid: 2b2f0549cb2af334790301d5f7495768, type: 2}
       propertyPath: m_LocalPosition.z
@@ -812,8 +812,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2893dd9d8f40c9a43bf144fbaf715d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementVector: {x: 0, y: 18, z: 0}
-  movementFactor: 0
+  movementVector: {x: 0, y: 9, z: 0}
+  period: 0
 --- !u!4 &1447318006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4870535709876366, guid: f24c333bd15b3fa4fb48322679f322b7,

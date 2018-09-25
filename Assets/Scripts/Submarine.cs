@@ -21,6 +21,8 @@ public class Submarine : MonoBehaviour
 	[SerializeField] ParticleSystem explosionVFX;
 	[SerializeField] ParticleSystem successVFX;
 
+	[SerializeField] float levelLoadDelay = 2f;
+
 	enum State { Alive, Dying, Transcending};
 	State state = State.Alive;
 
@@ -85,9 +87,9 @@ public class Submarine : MonoBehaviour
 		state = State.Dying;
 		audioSource.Stop();
 		mainPropellerVFX.Stop();
-		audioSource.PlayOneShot(explosionSFX, 1);
+		audioSource.PlayOneShot(explosionSFX);
 		explosionVFX.Play();
-		Invoke("DeathRestart", 2f);
+		Invoke("DeathRestart", levelLoadDelay);
 	}
 
 	private void StartSuccessSequence()
@@ -96,7 +98,7 @@ public class Submarine : MonoBehaviour
 		audioSource.Stop();
 		audioSource.PlayOneShot(successSFX, 1);
 		successVFX.Play();
-		Invoke("LoadNextLevel", 2f);
+		Invoke("LoadNextLevel", levelLoadDelay);
 	}
 
 	private void DeathRestart()
