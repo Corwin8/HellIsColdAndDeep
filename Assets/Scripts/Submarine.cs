@@ -23,8 +23,10 @@ public class Submarine : MonoBehaviour
 
 	[SerializeField] float levelLoadDelay = 2f;
 
-	enum State { Alive, Dying, Transcending};
+	enum State { Alive, Dying, Transcending, Cheating};
 	State state = State.Alive;
+
+	bool collisionsDisabled = false;
 
 	// Use this for initialization
 	void Start () {
@@ -33,13 +35,31 @@ public class Submarine : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update() {
-		if (state == State.Alive)
+	void Update()
+	{
+		if (Debug.isDebugBuild)
+		{
+			RespondToDebugKeys();
+		}
+
+		if (state == State.Alive || state == State.Cheating)
 		{
 			Maneuvering();
 			PropellerSound();
 		}
 
+	}
+
+	private void RespondToDebugKeys()
+	{
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			LoadNextLevel();
+		}
+		else if (Input.GetKeyDown(KeyCode.C))
+		{
+			collisionsDisabled = !collisionsDisabled;
+		}
 	}
 
 	private void Maneuvering()
@@ -64,7 +84,7 @@ public class Submarine : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (state != State.Alive)
+		if (state != State.Alive || collisionsDisabled)
 		{
 			return;
 		}
