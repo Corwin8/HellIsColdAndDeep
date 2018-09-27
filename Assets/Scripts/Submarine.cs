@@ -23,9 +23,8 @@ public class Submarine : MonoBehaviour
 
 	[SerializeField] float levelLoadDelay = 2f;
 
-	enum State { Alive, Dying, Transcending, Cheating};
-	State state = State.Alive;
-
+	bool isTranscending = false;
+	
 	bool collisionsDisabled = false;
 
 	// Use this for initialization
@@ -42,7 +41,7 @@ public class Submarine : MonoBehaviour
 			RespondToDebugKeys();
 		}
 
-		if (state == State.Alive || state == State.Cheating)
+		if (!isTranscending)
 		{
 			Maneuvering();
 			PropellerSound();
@@ -84,7 +83,7 @@ public class Submarine : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (state != State.Alive || collisionsDisabled)
+		if (isTranscending || collisionsDisabled)
 		{
 			return;
 		}
@@ -94,9 +93,11 @@ public class Submarine : MonoBehaviour
 			case "Friendly":
 				break;
 			case "Finish":
+				isTranscending = true;
 				StartSuccessSequence();
 				break;
 			default:
+				isTranscending = true;
 				StartDeathSequence();
 				break;
 		}		
@@ -104,7 +105,6 @@ public class Submarine : MonoBehaviour
 
 	private void StartDeathSequence()
 	{
-		state = State.Dying;
 		audioSource.Stop();
 		mainPropellerVFX.Stop();
 		audioSource.PlayOneShot(explosionSFX);
@@ -114,7 +114,6 @@ public class Submarine : MonoBehaviour
 
 	private void StartSuccessSequence()
 	{
-		state = State.Transcending;
 		audioSource.Stop();
 		audioSource.PlayOneShot(successSFX, 1);
 		successVFX.Play();
